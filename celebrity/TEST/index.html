@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<head>
+    <title>Celebrity</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+
+</head>
+<body>
+<div class="flex w-fit h-fit">
+  <!-- Add a unique class "input-number" to each input box -->
+  <div class="bg-purple-300 h-10 w-10 rounded-xl m-4">
+    <div>
+      <div class="relative">
+        <input type="text" maxlength="1" pattern="[01]" class="input-number text-center pr-0.5 w-full h-10 bg-inherit text-lg text-purple-500 border focus:outline-none rounded-xl shadow-sm focus:border-purple-600" />
+        <span class="absolute inset-y-0 left-0 flex items-center justify-center ml-2"></span>
+      </div>
+    </div>
+  </div>
+  <!-- Repeat the above code for the remaining 8 boxes -->
+</div>
+
+<button id="check-btn" disabled class="bg-gray-300 text-gray-500 px-4 py-2 rounded-md">Check</button>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+  $(document).ready(function() {
+    var inputValues = []; // Array to store input values
+    
+    // Get all input boxes with class "input-number"
+    var inputNumbers = $('.input-number');
+    
+    // Loop through each input box
+    inputNumbers.each(function(index) {
+      $(this).on('input', function() {
+        if ($(this).val().length === 1) {
+          // Store the input value in the array
+          inputValues[index] = $(this).val();
+          
+          // Move the focus to the next input box
+          if (index < inputNumbers.length - 1) {
+            inputNumbers.eq(index + 1).focus();
+          }
+          
+          // Check if all input boxes have a value
+          var allFilled = inputValues.every(function(value) {
+            return value !== undefined;
+          });
+          
+          // Enable the "Check" button if all input boxes are filled
+          if (allFilled) {
+            $('#check-btn').prop('disabled', false);
+            $('#check-btn').removeClass('bg-gray-300 text-gray-500');
+            $('#check-btn').addClass('bg-purple-500 text-white');
+          } else {
+            $('#check-btn').prop('disabled', true);
+            $('#check-btn').removeClass('bg-purple-500 text-white');
+            $('#check-btn').addClass('bg-gray-300 text-gray-500');
+          }
+          
+          // Remove the "bg-red-500" class if input is filled
+          $(this).removeClass('bg-red-500');
+        } else {
+          // Add the "bg-red-500" class if input is not filled
+          $(this).addClass('bg-red-500');
+        }
+      });
+    });
+
+    // Click event handler for the "Check" button
+    $('#check-btn').on('click', function() {
+      // Check if all input boxes have a value
+      var allFilled = inputValues.every(function(value) {
+        return value !== undefined;
+      });
+      
+      // Log all input values to the console if all input boxes are filled
+      if (allFilled) {
+        console.log(inputValues);
+      }
+    });
+  });
+</script>
+</body>
+</html>
